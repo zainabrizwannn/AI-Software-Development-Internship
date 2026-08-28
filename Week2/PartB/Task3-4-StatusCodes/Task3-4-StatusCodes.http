@@ -1,0 +1,6 @@
+@Task3_4_StatusCodes_HostAddress = http://localhost:5147
+
+GET {{Task3_4_StatusCodes_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\StudentManagementSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\StudentManagementSystem.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\StudentManagementSystem.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\StudentManagementSystem.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\bin\Debug\net10.0\StudentManagementSystem.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\bin\Debug\net10.0\StudentManagementSystem.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\bin\Debug\net10.0\StudentManagementSystem.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\bin\Debug\net10.0\StudentManagementSystem.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\bin\Debug\net10.0\StudentManagementSystem.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\StudentManagementSystem.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\refint\StudentManagementSystem.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\StudentManagementSystem.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\StudentManagementSystem.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\Week1-Project\StudentManagementSystem\obj\Debug\net10.0\ref\StudentManagementSystem.dll

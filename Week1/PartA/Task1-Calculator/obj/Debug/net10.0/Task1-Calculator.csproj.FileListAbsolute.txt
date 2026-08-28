@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\bin\Debug\net10.0\Task1-Calculator.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\bin\Debug\net10.0\Task1-Calculator.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\bin\Debug\net10.0\Task1-Calculator.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\bin\Debug\net10.0\Task1-Calculator.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\bin\Debug\net10.0\Task1-Calculator.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\Task1-Calculator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\Task1-Calculator.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\Task1-Calculator.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\Task1-Calculator.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\Task1-Calculator.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\refint\Task1-Calculator.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\Task1-Calculator.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\Task1-Calculator.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task1-Calculator\obj\Debug\net10.0\ref\Task1-Calculator.dll

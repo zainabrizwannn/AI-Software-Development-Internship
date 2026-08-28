@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\bin\Debug\net10.0\Task5-largesmallnumbers.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\bin\Debug\net10.0\Task5-largesmallnumbers.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\bin\Debug\net10.0\Task5-largesmallnumbers.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\bin\Debug\net10.0\Task5-largesmallnumbers.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\bin\Debug\net10.0\Task5-largesmallnumbers.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\Task5-largesmallnumbers.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\Task5-largesmallnumbers.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\Task5-largesmallnumbers.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\Task5-largesmallnumbers.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\Task5-largesmallnumbers.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\refint\Task5-largesmallnumbers.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\Task5-largesmallnumbers.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\Task5-largesmallnumbers.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task5-largesmallnumbers\obj\Debug\net10.0\ref\Task5-largesmallnumbers.dll

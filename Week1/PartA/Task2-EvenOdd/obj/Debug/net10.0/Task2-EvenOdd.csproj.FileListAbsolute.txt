@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\bin\Debug\net10.0\Task2-EvenOdd.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\bin\Debug\net10.0\Task2-EvenOdd.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\bin\Debug\net10.0\Task2-EvenOdd.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\bin\Debug\net10.0\Task2-EvenOdd.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\bin\Debug\net10.0\Task2-EvenOdd.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\Task2-EvenOdd.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\Task2-EvenOdd.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\Task2-EvenOdd.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\Task2-EvenOdd.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\Task2-EvenOdd.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\refint\Task2-EvenOdd.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\Task2-EvenOdd.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\Task2-EvenOdd.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task2-EvenOdd\obj\Debug\net10.0\ref\Task2-EvenOdd.dll

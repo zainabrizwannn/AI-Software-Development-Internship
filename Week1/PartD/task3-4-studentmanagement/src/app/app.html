@@ -1,0 +1,31 @@
+<h1>Student Management</h1>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Department</th>
+    <th>Marks</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let student of students">
+    <td>{{ student.id }}</td>
+    <td>{{ student.name }}</td>
+    <td>{{ student.department }}</td>
+    <td>{{ student.marks }}</td>
+    <td>
+      <button (click)="selectStudent(student)">Select</button>
+    </td>
+  </tr>
+</table>
+
+<hr>
+
+<div *ngIf="selectedStudent">
+  <h2>Selected Student</h2>
+  <p>ID: {{ selectedStudent.id }}</p>
+  <p>Name: {{ selectedStudent.name }}</p>
+  <p>Department: {{ selectedStudent.department }}</p>
+  <p>Marks: {{ selectedStudent.marks }}</p>
+</div>

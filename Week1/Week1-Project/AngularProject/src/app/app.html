@@ -1,0 +1,17 @@
+<div class="container">
+
+  <h1>{{ title }}</h1>
+
+  <app-student-list
+    [students]="students"
+    [(searchText)]="searchText"
+    (studentSelected)="selectStudent($event)">
+  </app-student-list>
+
+  <hr>
+
+  <app-student-details
+    [student]="selectedStudent">
+  </app-student-details>
+
+</div>

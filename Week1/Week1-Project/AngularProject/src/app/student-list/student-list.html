@@ -1,0 +1,32 @@
+<h2>Student List</h2>
+
+<input
+  type="text"
+  placeholder="Search by Name"
+  [(ngModel)]="searchText"
+  (ngModelChange)="searchTextChange.emit(searchText)"
+>
+
+<br><br>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Department</th>
+    <th>Marks</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let student of filteredStudents">
+    <td>{{ student.id }}</td>
+    <td>{{ student.name }}</td>
+    <td>{{ student.department }}</td>
+    <td>{{ student.marks }}</td>
+    <td>
+      <button (click)="selectStudent(student)">
+        Select
+      </button>
+    </td>
+  </tr>
+</table>

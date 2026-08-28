@@ -1,0 +1,110 @@
+/* Page */
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f4f6f9;
+}
+
+/* Header */
+h1{
+    text-align:center;
+    color:white;
+    background:#1e3a8a;
+    padding:20px;
+    margin:0;
+}
+
+/* Navigation */
+nav{
+    background:#2563eb;
+    padding:15px;
+    text-align:center;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+    margin:0 20px;
+    font-size:18px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#ffd700;
+}
+
+/* Main Content */
+router-outlet{
+    display:block;
+    margin:30px;
+}
+
+/* Cards */
+.card{
+    background:white;
+    width:80%;
+    margin:20px auto;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.15);
+}
+
+/* Tables */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#1e3a8a;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:10px;
+    border:1px solid #ddd;
+}
+
+tr:nth-child(even){
+    background:#f2f2f2;
+}
+
+/* Form */
+form{
+    width:400px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.15);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#1e40af;
+}
+
+h2{
+    color:#1e3a8a;
+    text-align:center;
+}

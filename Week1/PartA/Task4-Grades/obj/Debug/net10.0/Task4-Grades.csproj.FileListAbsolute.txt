@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\bin\Debug\net10.0\Task4-Grades.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\bin\Debug\net10.0\Task4-Grades.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\bin\Debug\net10.0\Task4-Grades.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\bin\Debug\net10.0\Task4-Grades.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\bin\Debug\net10.0\Task4-Grades.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\Task4-Grades.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\Task4-Grades.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\Task4-Grades.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\Task4-Grades.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\Task4-Grades.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\refint\Task4-Grades.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\Task4-Grades.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\Task4-Grades.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task4-Grades\obj\Debug\net10.0\ref\Task4-Grades.dll

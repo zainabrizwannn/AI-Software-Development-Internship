@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\Task2-Inheritance.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\Task2-Inheritance.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\Task2-Inheritance.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\Task2-Inheritance.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\bin\Debug\net10.0\Task2-Inheritance.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\bin\Debug\net10.0\Task2-Inheritance.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\bin\Debug\net10.0\Task2-Inheritance.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\bin\Debug\net10.0\Task2-Inheritance.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\bin\Debug\net10.0\Task2-Inheritance.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\Task2-Inheritance.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\refint\Task2-Inheritance.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\Task2-Inheritance.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\Task2-Inheritance.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task2-Inheritance\obj\Debug\net10.0\ref\Task2-Inheritance.dll

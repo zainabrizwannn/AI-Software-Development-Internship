@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\bin\Debug\net10.0\Task1-PersonClass.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\bin\Debug\net10.0\Task1-PersonClass.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\bin\Debug\net10.0\Task1-PersonClass.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\bin\Debug\net10.0\Task1-PersonClass.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\bin\Debug\net10.0\Task1-PersonClass.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\Task1-PersonClass.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\Task1-PersonClass.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\Task1-PersonClass.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\Task1-PersonClass.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\Task1-PersonClass.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\refint\Task1-PersonClass.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\Task1-PersonClass.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\Task1-PersonClass.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartB\Task1-PersonClass\obj\Debug\net10.0\ref\Task1-PersonClass.dll

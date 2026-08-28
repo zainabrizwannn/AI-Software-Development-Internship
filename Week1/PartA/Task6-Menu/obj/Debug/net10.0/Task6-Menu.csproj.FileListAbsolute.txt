@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\bin\Debug\net10.0\Task6-Menu.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\bin\Debug\net10.0\Task6-Menu.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\bin\Debug\net10.0\Task6-Menu.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\bin\Debug\net10.0\Task6-Menu.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\bin\Debug\net10.0\Task6-Menu.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\Task6-Menu.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\Task6-Menu.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\Task6-Menu.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\Task6-Menu.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\Task6-Menu.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\refint\Task6-Menu.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\Task6-Menu.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\Task6-Menu.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task6-Menu\obj\Debug\net10.0\ref\Task6-Menu.dll

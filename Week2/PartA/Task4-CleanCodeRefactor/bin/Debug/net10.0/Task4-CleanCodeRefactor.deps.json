@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Task4-CleanCodeRefactor/1.0.0": {
+        "runtime": {
+          "Task4-CleanCodeRefactor.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Task4-CleanCodeRefactor/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,26 @@
+<h2>Book List</h2>
+
+<table border="1">
+
+<tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Category</th>
+    <th>Action</th>
+</tr>
+
+<tr *ngFor="let book of books">
+
+    <td>{{book.id}}</td>
+    <td>{{book.title}}</td>
+    <td>{{book.author}}</td>
+    <td>{{book.category}}</td>
+
+    <td>
+        <button (click)="deleteBook(book.id)">Delete</button>
+    </td>
+
+</tr>
+
+</table>

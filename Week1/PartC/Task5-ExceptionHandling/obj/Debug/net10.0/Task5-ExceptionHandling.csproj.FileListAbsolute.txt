@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\bin\Debug\net10.0\Task5-ExceptionHandling.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\bin\Debug\net10.0\Task5-ExceptionHandling.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\bin\Debug\net10.0\Task5-ExceptionHandling.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\bin\Debug\net10.0\Task5-ExceptionHandling.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\bin\Debug\net10.0\Task5-ExceptionHandling.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\Task5-ExceptionHandling.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\Task5-ExceptionHandling.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\Task5-ExceptionHandling.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\Task5-ExceptionHandling.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\Task5-ExceptionHandling.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\refint\Task5-ExceptionHandling.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\Task5-ExceptionHandling.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\Task5-ExceptionHandling.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartC\Task5-ExceptionHandling\obj\Debug\net10.0\ref\Task5-ExceptionHandling.dll

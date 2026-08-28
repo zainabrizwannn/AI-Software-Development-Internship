@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\bin\Debug\net10.0\Task3-FizzBuzz.exe
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\bin\Debug\net10.0\Task3-FizzBuzz.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\bin\Debug\net10.0\Task3-FizzBuzz.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\bin\Debug\net10.0\Task3-FizzBuzz.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\bin\Debug\net10.0\Task3-FizzBuzz.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\Task3-FizzBuzz.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\Task3-FizzBuzz.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\Task3-FizzBuzz.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\Task3-FizzBuzz.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\Task3-FizzBuzz.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\refint\Task3-FizzBuzz.dll
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\Task3-FizzBuzz.pdb
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\Task3-FizzBuzz.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week1\PartA\Task3-FizzBuzz\obj\Debug\net10.0\ref\Task3-FizzBuzz.dll

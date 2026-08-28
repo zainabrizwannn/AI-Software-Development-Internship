@@ -1,0 +1,12 @@
+<h2>Selected Student Details</h2>
+
+<div class="details-card" *ngIf="student">
+  <p><strong>ID:</strong> {{ student.id }}</p>
+  <p><strong>Name:</strong> {{ student.name }}</p>
+  <p><strong>Department:</strong> {{ student.department }}</p>
+  <p><strong>Marks:</strong> {{ student.marks }}</p>
+</div>
+
+<p class="no-selection" *ngIf="!student">
+  No student selected.
+</p>

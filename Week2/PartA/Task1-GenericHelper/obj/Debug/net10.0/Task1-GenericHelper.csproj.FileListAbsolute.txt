@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\bin\Debug\net10.0\Task1-GenericHelper.exe
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\bin\Debug\net10.0\Task1-GenericHelper.deps.json
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\bin\Debug\net10.0\Task1-GenericHelper.runtimeconfig.json
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\bin\Debug\net10.0\Task1-GenericHelper.dll
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\bin\Debug\net10.0\Task1-GenericHelper.pdb
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\Task1-GenericHelper.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\Task1-GenericHelper.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\Task1-GenericHelper.AssemblyInfo.cs
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\Task1-GenericHelper.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\Task1-GenericHelper.dll
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\refint\Task1-GenericHelper.dll
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\Task1-GenericHelper.pdb
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\Task1-GenericHelper.genruntimeconfig.cache
+C:\Users\User\Desktop\Internship\Internship\Week2\PartA\Task1-GenericHelper\obj\Debug\net10.0\ref\Task1-GenericHelper.dll
