@@ -1,0 +1,43 @@
+<h2>Library Books</h2>
+
+<form [formGroup]="bookForm" (ngSubmit)="addBook()">
+
+  <label>Title</label><br>
+  <input type="text" formControlName="title">
+  <br><br>
+
+  <label>Author ID</label><br>
+  <input type="number" formControlName="authorId">
+  <br><br>
+
+  <button type="submit">Add Book</button>
+
+</form>
+
+<br>
+
+<p *ngIf="isLoading">Loading...</p>
+
+<p *ngIf="errorMessage" style="color:red;">
+  {{ errorMessage }}
+</p>
+
+<table border="1">
+
+  <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Title</th>
+      <th>Author ID</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let book of books">
+      <td>{{ book.bookId }}</td>
+      <td>{{ book.title }}</td>
+      <td>{{ book.authorId }}</td>
+    </tr>
+  </tbody>
+
+</table>

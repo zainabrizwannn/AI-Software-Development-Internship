@@ -1,0 +1,19 @@
+# Environment variables
+.env
+
+# Python virtual environment
+.venv/
+
+# .NET build files
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node modules
+node_modules/
