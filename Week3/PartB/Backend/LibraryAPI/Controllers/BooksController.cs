@@ -38,11 +38,18 @@ namespace LibraryAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBook(Book book)
         {
-            _context.Books.Add(book);
+            try
+            {
+                _context.Books.Add(book);
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-            return Ok(book);
+                return Ok(book);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error saving book: " + ex.Message);
+            }
         }
 
         // PUT: api/Books/5
@@ -56,12 +63,19 @@ namespace LibraryAPI.Controllers
                 return NotFound("Book not found.");
             }
 
-            book.Title = updatedBook.Title;
-            book.AuthorId = updatedBook.AuthorId;
+            try
+            {
+                book.Title = updatedBook.Title;
+                book.AuthorId = updatedBook.AuthorId;
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-            return Ok(book);
+                return Ok(book);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error updating book: " + ex.Message);
+            }
         }
 
         // DELETE: api/Books/5
@@ -75,11 +89,18 @@ namespace LibraryAPI.Controllers
                 return NotFound("Book not found.");
             }
 
-            _context.Books.Remove(book);
+            try
+            {
+                _context.Books.Remove(book);
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-            return Ok("Book deleted successfully.");
+                return Ok("Book deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error deleting book: " + ex.Message);
+            }
         }
     }
 }
