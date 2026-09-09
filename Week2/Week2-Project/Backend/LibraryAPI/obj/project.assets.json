@@ -503,11 +503,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\Week2-Project\\Backend\\LibraryAPI\\LibraryAPI.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\Week2-Project\\Backend\\LibraryAPI\\LibraryAPI.csproj",
       "projectName": "LibraryAPI",
-      "projectPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\Week2-Project\\Backend\\LibraryAPI\\LibraryAPI.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\Week2-Project\\Backend\\LibraryAPI\\LibraryAPI.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\Week2-Project\\Backend\\LibraryAPI\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\Week2-Project\\Backend\\LibraryAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task1-Calculator\\Task1-Calculator.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task1-Calculator\\Task1-Calculator.csproj",
       "projectName": "Task1-Calculator",
-      "projectPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task1-Calculator\\Task1-Calculator.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task1-Calculator\\Task1-Calculator.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task1-Calculator\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task1-Calculator\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"

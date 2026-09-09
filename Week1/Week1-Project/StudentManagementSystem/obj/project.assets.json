@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\Week1-Project\\StudentManagementSystem\\StudentManagementSystem.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\Week1-Project\\StudentManagementSystem\\StudentManagementSystem.csproj",
       "projectName": "StudentManagementSystem",
-      "projectPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\Week1-Project\\StudentManagementSystem\\StudentManagementSystem.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\Week1-Project\\StudentManagementSystem\\StudentManagementSystem.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\Week1-Project\\StudentManagementSystem\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\Week1-Project\\StudentManagementSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"

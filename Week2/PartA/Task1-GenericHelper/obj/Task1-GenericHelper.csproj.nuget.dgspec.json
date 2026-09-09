@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj": {}
+    "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj": {
+    "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj",
         "projectName": "Task1-GenericHelper",
-        "projectPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\Task1-GenericHelper.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartA\\Task1-GenericHelper\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
