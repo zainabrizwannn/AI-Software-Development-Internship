@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj": {}
+    "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj": {
+    "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj",
         "projectName": "Task2-Inheritance",
-        "projectPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\Task2-Inheritance.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartB\\Task2-Inheritance\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"

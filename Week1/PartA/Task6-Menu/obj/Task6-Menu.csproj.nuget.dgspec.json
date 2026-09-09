@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj": {}
+    "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj": {
+    "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj",
         "projectName": "Task6-Menu",
-        "projectPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\Task6-Menu.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week1\\PartA\\Task6-Menu\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"

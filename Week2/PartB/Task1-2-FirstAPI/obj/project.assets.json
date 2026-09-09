@@ -503,11 +503,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartB\\Task1-2-FirstAPI\\Task1-FirstAPI.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartB\\Task1-2-FirstAPI\\Task1-FirstAPI.csproj",
       "projectName": "Task1-FirstAPI",
-      "projectPath": "c:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartB\\Task1-2-FirstAPI\\Task1-FirstAPI.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartB\\Task1-2-FirstAPI\\Task1-FirstAPI.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\User\\Desktop\\Internship\\Internship\\Week2\\PartB\\Task1-2-FirstAPI\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Internships\\Internship\\Internship\\Week2\\PartB\\Task1-2-FirstAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
