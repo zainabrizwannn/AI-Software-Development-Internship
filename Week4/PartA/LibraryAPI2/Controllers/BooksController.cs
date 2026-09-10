@@ -19,13 +19,19 @@ namespace LibraryAPI.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+public async Task<IActionResult> GetBooks()
+{
+    var books = await _context.Books
+        .Select(b => new
         {
-            return await _context.Books
-                .Include(b => b.Author)
-                .ToListAsync();
-        }
+            b.BookId,
+            b.Title,
+            b.AuthorId
+        })
+        .ToListAsync();
 
+    return Ok(books);
+}
         // GET: api/Books/author/2
         [HttpGet("author/{authorId}")]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooksByAuthor(int authorId)
