@@ -61,21 +61,16 @@ export class BookListComponent implements OnInit {
   }
 
   addBook(): void {
-
     console.log('Add Book button clicked');
     console.log(this.bookForm.value);
-
     if (this.bookForm.invalid) {
       console.log('Form is invalid');
       return;
     }
-
     this.bookService.addBook(this.bookForm.value).subscribe({
       next: (response) => {
         console.log('Book Added', response);
-
         this.loadBooks();
-
         this.bookForm.reset({
           title: '',
           authorId: 0,

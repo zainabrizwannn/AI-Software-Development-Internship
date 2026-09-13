@@ -12,9 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-
   loginForm: FormGroup;
-
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -25,7 +23,6 @@ export class LoginComponent {
       password: ['']
     });
   }
-
   onSubmit() {
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
