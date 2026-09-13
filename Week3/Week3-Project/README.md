@@ -1,7 +1,7 @@
 # Week 3 Library Management System
 
 ## Project Overview
-A library management app built while learning .NET, Angular, and AI.
+A simple library management demo built during the AI Software Development Internship.
 The application consists of:
 - ASP.NET Core Web API
 - SQL Server with Entity Framework Core
