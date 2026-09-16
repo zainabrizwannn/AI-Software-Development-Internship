@@ -1,0 +1,117 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#eef2f7;
+}
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:40px auto;
+}
+
+h1{
+    text-align:center;
+    color:#0d6efd;
+    font-size:38px;
+    margin-bottom:30px;
+    font-weight:bold;
+}
+
+.card,
+.table-card{
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 6px 15px rgba(0,0,0,.12);
+    margin-bottom:30px;
+}
+
+h2{
+    color:#0d6efd;
+    margin-bottom:20px;
+    font-size:28px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    font-size:17px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#0d6efd;
+    box-shadow:0 0 5px rgba(13,110,253,.3);
+}
+
+button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:14px 30px;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#0b5ed7;
+    transform:translateY(-2px);
+}
+
+.error{
+    color:red;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#0d6efd;
+    color:white;
+}
+
+th{
+    padding:16px;
+    font-size:18px;
+}
+
+td{
+    padding:14px;
+    text-align:center;
+    font-size:17px;
+    border-bottom:1px solid #ddd;
+}
+
+tbody tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+tbody tr:hover{
+    background:#dbeafe;
+    transition:.3s;
+}
