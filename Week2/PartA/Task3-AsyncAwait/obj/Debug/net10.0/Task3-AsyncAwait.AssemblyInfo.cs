@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Task3-AsyncAwait")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+26581647b3334b0823b4df37e1e20c3108aeeb0c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33b509bd65c673cc1521f682d0f44a903d11ddd7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Task3-AsyncAwait")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Task3-AsyncAwait")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
