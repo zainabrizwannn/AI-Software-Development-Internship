@@ -11,7 +11,7 @@ collection = chroma_client.create_collection(
     name="library_rag")
 
 # Chunk Text
-def chunk_text(text, chunk_size=0, overlap=30):
+def chunk_text(text, chunk_size=150, overlap=30):
     chunks = []
     start = 0
     while start < len(text):
