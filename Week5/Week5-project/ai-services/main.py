@@ -1,108 +1,84 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
-from dotenv import load_dotenv
 from google import genai
-import os
-import json
 
-from rag import (
-    load_documents,
-    retrieve,
-    build_prompt
-)
+from rag import retrieve
 
-# Load Environment Variables
 load_dotenv()
 
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+app = FastAPI()
 
-# FastAPI App
-app = FastAPI(title="Library AI Service")
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Load RAG documents once when the app starts
-load_documents()
 
-# Request / Response Models
-class BookRequest(BaseModel):
-    title: str
-    description: str
-class AskRequest(BaseModel):
+class QuestionRequest(BaseModel):
     question: str
-class AskResponse(BaseModel):
-    answer: str
-    sources: list[str]
 
-# Home Endpoint
+
+class SummarizeRequest(BaseModel):
+    text: str
+
+
 @app.get("/")
 def home():
-    return {
-        "message": "AI Service Running"}
+    return {"message": "Library Knowledge Assistant API is running!"}
 
-# Summarize Endpoint
+
 @app.post("/summarize")
-def summarize(book: BookRequest):
+def summarize(request: SummarizeRequest):
+
+    response = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=f"Summarize the following text:\n\n{request.text}"
+    )
+
+    return {
+        "summary": response.text
+    }
+
+
+@app.post("/ask")
+def ask(request: QuestionRequest):
+
+    documents, metadata = retrieve(request.question)
+
+    context = "\n\n".join(documents)
+
     prompt = f"""
-You are a librarian and book expert.
-Analyze the following book.
+You are a helpful AI library assistant.
 
-Title:
-{book.title}
-Description:
-{book.description}
-Return ONLY valid JSON in this exact format:
-{{
-    "genre": "Genre name",
-    "summary": "A concise one-paragraph summary."}}
-Do not include markdown.
-Do not include explanation.
-Do not wrap the JSON inside ``` blocks.
+Answer ONLY using the information below.
+
+If the answer is not contained in the context, reply exactly:
+
+I don't have that information.
+
+Context:
+{context}
+
+Question:
+{request.question}
+
+Answer:
 """
-    try:
-        response = client.models.generate_content(
-            model="gemini-3.6-flash",
-            contents=prompt)
-        text = response.text.strip()
-        text = text.replace("```json", "")
-        text = text.replace("```", "")
-        text = text.strip()
-        result = json.loads(text)
 
-        return result
-    except json.JSONDecodeError:
-        return {
-            "error": "Unable to parse AI response."}
-    except Exception as e:
-        return {
-            "error": str(e)}
+    response = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=prompt
+    )
 
-# Ask Endpoint (RAG)
-@app.post("/ask", response_model=AskResponse)
-def ask(req: AskRequest):
-    try:
-        chunks, metadatas = retrieve(req.question)
-        if not chunks:
-            return AskResponse(
-                answer="I don't have that information.",
-                sources=[])
-        prompt = build_prompt(
-            req.question,
-            chunks)
-        response = client.models.generate_content(
-            model="gemini-3.6-flash",
-            contents=prompt)
-        sources = sorted(
-            list(
-                set(
-                    meta["source"]
-                    for meta in metadatas)))
+    sources = []
 
-        return AskResponse(
-            answer=response.text,
-            sources=sources)
+    for item in metadata:
+        source = item.get("source")
 
-    except Exception as e:
-        return AskResponse(
-            answer=f"Error: {str(e)}",
-            sources=[])
+        if source and source not in sources:
+            sources.append(source)
+
+    return {
+        "answer": response.text,
+        "sources": sources
+    }
