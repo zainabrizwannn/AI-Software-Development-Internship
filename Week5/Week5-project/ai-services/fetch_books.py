@@ -20,7 +20,6 @@ def fetch_books():
         print(f"Error fetching books: {e}")
         return []
 
-
 def create_documents(books):
     for book in books:
 
@@ -33,7 +32,6 @@ def create_documents(books):
             category = ", ".join(categories)
         else:
             category = "Unknown"
-
         filename = (
             title.replace("/", "-")
                  .replace("\\", "-")
@@ -45,9 +43,7 @@ def create_documents(books):
                  .replace(">", "")
                  .replace("|", "")
         )
-
         filepath = os.path.join(DOCUMENTS_FOLDER, f"{filename}.txt")
-
         with open(filepath, "w", encoding="utf-8") as file:
             file.write(f"Title: {title}\n")
             file.write(f"Author: {author}\n")

@@ -43,33 +43,24 @@ def get_collection():
         name=COLLECTION_NAME
     )
 
-
 def index_documents():
 
     try:
         chroma_client.delete_collection(COLLECTION_NAME)
     except:
         pass
-
     collection = get_collection()
-
     chunk_id = 0
-
     for filename in os.listdir(DOCUMENTS_FOLDER):
 
         if not filename.endswith(".txt"):
             continue
-
         path = os.path.join(DOCUMENTS_FOLDER, filename)
-
         with open(path, "r", encoding="utf-8") as f:
             text = f.read()
-
         title = "Unknown"
         category = "Unknown"
-
         for line in text.splitlines():
-
             if line.startswith("Title:"):
                 title = line.replace("Title:", "").strip()
 
