@@ -56,6 +56,30 @@ namespace LibraryAPI.Controllers
             return Ok(books);
         }
 
+	// GET: api/Books/4/availability
+	[AllowAnonymous]
+	[HttpGet("{id}/availability")]
+	public async Task<IActionResult> GetBookAvailability(int id)
+{
+    	var book = await _context.Books
+        .AsNoTracking()
+        .FirstOrDefaultAsync(b => b.BookId == id);
+
+    if (book == null)
+    {
+        return NotFound(new
+        {
+            message = "Book not found."
+        });
+    }
+
+    return Ok(new
+    {
+        bookId = book.BookId,
+        title = book.Title,
+        isAvailable = book.IsAvailable
+    });
+}
         // POST: api/Books
         [Authorize]
         [HttpPost]
