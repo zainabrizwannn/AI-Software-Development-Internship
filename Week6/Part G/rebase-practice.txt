@@ -1,3 +1,4 @@
 Interactive rebase practice
 Second change
 Third change
+Fourth change
