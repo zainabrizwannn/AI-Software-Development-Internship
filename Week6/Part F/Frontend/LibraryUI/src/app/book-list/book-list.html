@@ -1,0 +1,71 @@
+<div class="container">
+
+  <h1>📚 Library Management System</h1>
+
+  <div class="card">
+
+    <h2>Add New Book</h2>
+
+    <form
+    *ngIf="isAdmin"
+    [formGroup]="bookForm"
+    (ngSubmit)="addBook()">
+
+      <div class="form-group">
+        <label>Book Title</label>
+        <input
+          type="text"
+          formControlName="title"
+          placeholder="Enter book title">
+      </div>
+
+      <div class="form-group">
+        <label>Author ID</label>
+        <input
+          type="number"
+          formControlName="authorId"
+          placeholder="Enter author ID">
+      </div>
+      <button
+    *ngIf="isAdmin"
+    type="submit">
+    ➕ Add Book
+</button>
+
+    </form>
+
+    <p class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
+
+  </div>
+
+  <div class="table-card">
+
+    <h2>Book List</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Author ID</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let book of books">
+          <td>{{ book.bookId }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.authorId }}</td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
