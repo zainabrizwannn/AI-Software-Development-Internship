@@ -202,10 +202,73 @@ def ask_stream(
 ):
 
     if not request.question.strip():
+
         raise HTTPException(
             status_code=400,
             detail="Question is required."
         )
+
+    def event_generator():
+
+        try:
+
+            for text in stream_answer(
+                question=request.question,
+                session_id=request.session_id
+            ):
+
+                if not text:
+                    continue
+
+                safe_text = str(
+                    text
+                ).replace(
+                    "\r",
+                    ""
+                )
+
+                lines = (
+                    safe_text.split(
+                        "\n"
+                    )
+                )
+
+                for line in lines:
+                    yield (
+                        f"data: {line}\n"
+                    )
+
+                yield "\n"
+
+        except Exception as error:
+
+            print(
+                "Streaming error:",
+                repr(error)
+            )
+
+            yield (
+                "data: The AI assistant is temporarily unavailable.\n\n"
+            )
+
+        finally:
+
+            yield (
+                "data: [DONE]\n\n"
+            )
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control":
+                "no-cache",
+            "Connection":
+                "keep-alive",
+            "X-Accel-Buffering":
+                "no"
+        }
+    )
 
     def event_generator():
 

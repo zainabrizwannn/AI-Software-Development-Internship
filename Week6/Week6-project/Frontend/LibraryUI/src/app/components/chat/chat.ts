@@ -1,12 +1,17 @@
 import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnDestroy
 } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule
+} from '@angular/forms';
 
-import { ChatService } from '../../services/chat.service';
+import {
+  ChatService
+} from '../../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -18,7 +23,8 @@ import { ChatService } from '../../services/chat.service';
   templateUrl: './chat.html',
   styleUrl: './chat.css'
 })
-export class ChatComponent implements OnDestroy {
+export class ChatComponent
+  implements OnDestroy {
 
   question = '';
   answer = '';
@@ -26,15 +32,20 @@ export class ChatComponent implements OnDestroy {
   isStreaming = false;
   errorMessage = '';
 
-  private abortController: AbortController | null = null;
+  private abortController:
+    AbortController | null = null;
+
 
   constructor(
     private chatService: ChatService
   ) {}
 
-  async ask(): Promise<void> {
 
-    const question = this.question.trim();
+  async ask():
+    Promise<void> {
+
+    const question =
+      this.question.trim();
 
     if (!question) {
       return;
@@ -44,23 +55,41 @@ export class ChatComponent implements OnDestroy {
     this.errorMessage = '';
     this.isStreaming = true;
 
-    this.abortController = new AbortController();
+    this.abortController =
+      new AbortController();
 
     try {
 
       await this.chatService.askStream(
         question,
+
         (chunk: string) => {
           this.answer += chunk;
         },
+
         this.abortController.signal
       );
 
     } catch (error: any) {
 
-      if (error?.name === 'AbortError') {
-        console.log('Stream cancelled.');
+      if (
+        error?.name === 'AbortError'
+      ) {
+
+        console.log(
+          'Stream cancelled.'
+        );
+
+      } else if (
+        error?.message ===
+        'AI_TEMPORARILY_UNAVAILABLE'
+      ) {
+
+        this.errorMessage =
+          'The AI assistant is temporarily unavailable. Please try again shortly.';
+
       } else {
+
         console.error(error);
 
         this.errorMessage =
@@ -74,14 +103,21 @@ export class ChatComponent implements OnDestroy {
     }
   }
 
-  stopStreaming(): void {
 
-    if (this.abortController) {
+  stopStreaming():
+    void {
+
+    if (
+      this.abortController
+    ) {
       this.abortController.abort();
     }
   }
 
-  ngOnDestroy(): void {
+
+  ngOnDestroy():
+    void {
+
     this.stopStreaming();
   }
 }

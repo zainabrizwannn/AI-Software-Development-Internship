@@ -8,9 +8,42 @@ import { AuthService } from './auth';
 })
 export class ChatService {
 
+  private readonly sessionKey =
+    'library-ai-session-id';
+
   constructor(
     private auth: AuthService
   ) {}
+
+  getSessionId(): string {
+
+    let sessionId =
+      localStorage.getItem(
+        this.sessionKey
+      );
+
+    if (!sessionId) {
+
+      if (
+        typeof crypto !== 'undefined'
+        && crypto.randomUUID
+      ) {
+        sessionId =
+          crypto.randomUUID();
+      } else {
+        sessionId =
+          `session-${Date.now()}`;
+      }
+
+      localStorage.setItem(
+        this.sessionKey,
+        sessionId
+      );
+    }
+
+    return sessionId;
+  }
+
 
   async askStream(
     question: string,
@@ -21,28 +54,40 @@ export class ChatService {
     const token =
       this.auth.getToken();
 
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json'
-    };
+    const headers:
+      Record<string, string> = {
+        'Content-Type':
+          'application/json'
+      };
 
     if (token) {
       headers['Authorization'] =
         `Bearer ${token}`;
     }
 
-    const response = await fetch(
-      `${environment.apiUrl}/api/Assistant/ask/stream`,
-      {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          question
-        }),
-        signal
-      }
-    );
+    const response =
+      await fetch(
+        `${environment.apiUrl}/api/Assistant/ask/stream`,
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            question,
+            sessionId:
+              this.getSessionId()
+          }),
+          signal
+        }
+      );
 
     if (!response.ok) {
+
+      if (response.status === 503) {
+        throw new Error(
+          'AI_TEMPORARILY_UNAVAILABLE'
+        );
+      }
+
       throw new Error(
         `Streaming request failed: ${response.status}`
       );
@@ -88,22 +133,57 @@ export class ChatService {
 
       for (const event of events) {
 
-        const line =
-          event.trim();
+        const lines =
+          event.split('\n');
 
-        if (!line.startsWith('data:')) {
-          continue;
+        for (const line of lines) {
+
+          if (
+            !line.startsWith('data:')
+          ) {
+            continue;
+          }
+
+          const text =
+            line
+              .substring(5)
+              .trimStart();
+
+          if (
+            text === '[DONE]'
+          ) {
+            return;
+          }
+
+          onChunk(text);
         }
-
-        const text =
-          line.substring(5).trimStart();
-
-        if (text === '[DONE]') {
-          return;
-        }
-
-        onChunk(text);
       }
     }
+  }
+
+
+  async clearSession():
+    Promise<void> {
+
+    const sessionId =
+      this.getSessionId();
+
+    await fetch(
+      `${environment.apiUrl}/api/Assistant/session/clear`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+        body: JSON.stringify({
+          sessionId
+        })
+      }
+    );
+
+    localStorage.removeItem(
+      this.sessionKey
+    );
   }
 }
