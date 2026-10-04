@@ -1,6 +1,8 @@
 <div class="chat-container">
 
-  <h1>Library AI Assistant</h1>
+  <h1>
+    Library AI Assistant
+  </h1>
 
   <p class="subtitle">
     Ask a question about the library.
@@ -19,7 +21,10 @@
       <button
         type="button"
         (click)="ask()"
-        [disabled]="isStreaming || !question.trim()"
+        [disabled]="
+          isStreaming ||
+          !question.trim()
+        "
       >
         Ask AI
       </button>
@@ -39,12 +44,19 @@
 
   <div
     class="answer-box"
-    *ngIf="answer || isStreaming"
+    *ngIf="
+      answer ||
+      isStreaming
+    "
   >
 
-    <h3>AI Response</h3>
+    <h3>
+      AI Response
+    </h3>
 
-    <p>{{ answer }}</p>
+    <p>
+      {{ answer }}
+    </p>
 
     <span
       class="streaming"
