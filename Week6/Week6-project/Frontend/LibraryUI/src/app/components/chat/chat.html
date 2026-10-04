@@ -1,0 +1,65 @@
+<div class="chat-container">
+
+  <h1>Library AI Assistant</h1>
+
+  <p class="subtitle">
+    Ask a question about the library.
+  </p>
+
+  <div class="question-box">
+
+    <textarea
+      [(ngModel)]="question"
+      placeholder="Ask a question..."
+      [disabled]="isStreaming"
+    ></textarea>
+
+    <div class="buttons">
+
+      <button
+        type="button"
+        (click)="ask()"
+        [disabled]="isStreaming || !question.trim()"
+      >
+        Ask AI
+      </button>
+
+      <button
+        type="button"
+        class="stop-button"
+        *ngIf="isStreaming"
+        (click)="stopStreaming()"
+      >
+        Stop
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    class="answer-box"
+    *ngIf="answer || isStreaming"
+  >
+
+    <h3>AI Response</h3>
+
+    <p>{{ answer }}</p>
+
+    <span
+      class="streaming"
+      *ngIf="isStreaming"
+    >
+      Streaming...
+    </span>
+
+  </div>
+
+  <div
+    class="error"
+    *ngIf="errorMessage"
+  >
+    {{ errorMessage }}
+  </div>
+
+</div>
