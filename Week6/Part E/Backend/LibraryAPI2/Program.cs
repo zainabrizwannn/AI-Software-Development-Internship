@@ -16,32 +16,20 @@ builder.Services
         {
             var baseUrl =
                 builder.Configuration[
-                    "AiService:BaseUrl"
-                ];
-
-            if (string.IsNullOrWhiteSpace(baseUrl))
-            {
+                    "AiService:BaseUrl" ];
+            if (string.IsNullOrWhiteSpace(baseUrl)) {
                 throw new InvalidOperationException(
-                    "AiService:BaseUrl is not configured."
-                );
-            }
-
+                    "AiService:BaseUrl is not configured.");}
             client.BaseAddress =
                 new Uri(baseUrl);
-
             client.Timeout =
-                Timeout.InfiniteTimeSpan;
-        }
-    )
+                Timeout.InfiniteTimeSpan;})
     .AddPolicyHandler(
-        GetCircuitBreakerPolicy()
-    )
+        GetCircuitBreakerPolicy())
     .AddPolicyHandler(
-        GetRetryPolicy()
-    )
+        GetRetryPolicy())
     .AddPolicyHandler(
-        GetTimeoutPolicy()
-    );
+        GetTimeoutPolicy());
 
 // Controllers
 builder.Services.AddControllers()
@@ -148,34 +136,24 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();
 static IAsyncPolicy<HttpResponseMessage>
-    GetRetryPolicy()
-{
+    GetRetryPolicy(){
     return HttpPolicyExtensions
         .HandleTransientHttpError()
         .WaitAndRetryAsync(
             retryCount: 3,
             sleepDurationProvider: attempt =>
                 TimeSpan.FromSeconds(
-                    Math.Pow(2, attempt)
-                ),
+                    Math.Pow(2, attempt)),
             onRetry: (
                 outcome,
                 delay,
                 attempt,
                 context
-            ) =>
-            {
+            ) =>{
                 Console.WriteLine(
-                    $"AI retry {attempt} after {delay.TotalSeconds} seconds."
-                );
-            }
-        );
-}
-
-
+                    $"AI retry {attempt} after {delay.TotalSeconds} seconds.");});}
 static IAsyncPolicy<HttpResponseMessage>
     GetCircuitBreakerPolicy()
 {
@@ -185,31 +163,15 @@ static IAsyncPolicy<HttpResponseMessage>
             handledEventsAllowedBeforeBreaking: 3,
             durationOfBreak:
                 TimeSpan.FromSeconds(30),
-
             onBreak: (
                 outcome,
-                breakDelay
-            ) =>
-            {
+                breakDelay) =>{
                 Console.WriteLine(
-                    $"AI circuit opened for {breakDelay.TotalSeconds} seconds."
-                );
-            },
-
-            onReset: () =>
-            {
+                    $"AI circuit opened for {breakDelay.TotalSeconds} seconds.");},
+            onReset: () =>{
                 Console.WriteLine(
-                    "AI circuit closed again."
-                );
-            }
-        );
-}
-
-
+                    "AI circuit closed again.");});}
 static IAsyncPolicy<HttpResponseMessage>
-    GetTimeoutPolicy()
-{
+    GetTimeoutPolicy(){
     return Policy.TimeoutAsync<HttpResponseMessage>(
-        TimeSpan.FromSeconds(10)
-    );
-}
+        TimeSpan.FromSeconds(10));}
