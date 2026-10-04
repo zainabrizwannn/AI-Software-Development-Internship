@@ -1,11 +1,17 @@
 import os
-from operator import itemgetter
+import requests
 
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
+from langchain_core.messages import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage,
+    ToolMessage
+)
 from langchain_core.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder
@@ -17,6 +23,7 @@ from langchain_core.runnables import (
 from langchain_core.runnables.history import (
     RunnableWithMessageHistory
 )
+from langchain_core.tools import tool
 from langchain_google_genai import (
     ChatGoogleGenerativeAI,
     GoogleGenerativeAIEmbeddings
@@ -49,7 +56,13 @@ CHROMA_FOLDER = os.path.join(
     "chroma_db"
 )
 
-COLLECTION_NAME = "week6_final_library_rag"
+COLLECTION_NAME = (
+    "week6_final_library_rag"
+)
+
+LIBRARY_API_BASE_URL = (
+    "http://localhost:5194"
+)
 
 
 GEMINI_API_KEY = os.getenv(
@@ -68,6 +81,7 @@ os.environ["GOOGLE_API_KEY"] = (
 
 
 class BookAnswer(BaseModel):
+
     answer: str = Field(
         description=(
             "The answer to the user's "
@@ -84,10 +98,80 @@ class BookAnswer(BaseModel):
 
     sources: list[str] = Field(
         description=(
-            "Source document names used "
-            "to answer the question"
+            "Source documents or services "
+            "used for the answer"
         )
     )
+
+
+@tool
+def check_book_availability(
+    book_id: int
+) -> str:
+    """
+    Check whether a specific library book
+    is currently available to borrow.
+
+    Use this tool only when the user asks
+    about current book availability.
+    """
+
+    url = (
+        f"{LIBRARY_API_BASE_URL}"
+        f"/api/Books/"
+        f"{book_id}/availability"
+    )
+
+    try:
+
+        response = requests.get(
+            url,
+            timeout=10
+        )
+
+        if response.status_code == 404:
+
+            return (
+                "Book not found."
+            )
+
+        if response.status_code != 200:
+
+            return (
+                "Could not check book "
+                "availability right now."
+            )
+
+        data = response.json()
+
+        title = data.get(
+            "title",
+            "Unknown book"
+        )
+
+        is_available = data.get(
+            "isAvailable",
+            False
+        )
+
+        if is_available:
+
+            return (
+                f"{title} is currently "
+                "available to borrow."
+            )
+
+        return (
+            f"{title} is currently "
+            "borrowed."
+        )
+
+    except requests.RequestException:
+
+        return (
+            "Could not connect to the "
+            "library availability API."
+        )
 
 
 def load_documents() -> list[Document]:
@@ -97,6 +181,7 @@ def load_documents() -> list[Document]:
     if not os.path.exists(
         DOCUMENTS_FOLDER
     ):
+
         raise FileNotFoundError(
             f"Documents folder not found: "
             f"{DOCUMENTS_FOLDER}"
@@ -134,22 +219,27 @@ def load_documents() -> list[Document]:
     return documents
 
 
-splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
-    chunk_overlap=50,
-    separators=[
-        "\n\n",
-        "\n",
-        ". ",
-        " ",
-        ""
-    ]
+splitter = (
+    RecursiveCharacterTextSplitter(
+        chunk_size=500,
+        chunk_overlap=50,
+        separators=[
+            "\n\n",
+            "\n",
+            ". ",
+            " ",
+            ""
+        ]
+    )
 )
 
 
 embeddings = (
     GoogleGenerativeAIEmbeddings(
-        model="models/gemini-embedding-001",
+        model=(
+            "models/"
+            "gemini-embedding-001"
+        ),
         google_api_key=GEMINI_API_KEY
     )
 )
@@ -165,7 +255,9 @@ vectorstore = Chroma(
 def ensure_documents_indexed():
 
     current_count = (
-        vectorstore._collection.count()
+        vectorstore
+        ._collection
+        .count()
     )
 
     if current_count > 0:
@@ -173,11 +265,14 @@ def ensure_documents_indexed():
 
     documents = load_documents()
 
-    chunks = splitter.split_documents(
-        documents
+    chunks = (
+        splitter.split_documents(
+            documents
+        )
     )
 
     if not chunks:
+
         raise ValueError(
             "No document chunks were created."
         )
@@ -211,6 +306,15 @@ model = ChatGoogleGenerativeAI(
 )
 
 
+model_with_tools = (
+    model.bind_tools(
+        [
+            check_book_availability
+        ]
+    )
+)
+
+
 multi_query_retriever = (
     MultiQueryRetriever.from_llm(
         retriever=base_retriever,
@@ -229,12 +333,34 @@ def guard_short_questions(
     )
 
     if len(question) < 3:
+
         raise ValueError(
             "Question too short to "
             "answer meaningfully."
         )
 
     return inputs
+
+
+def is_availability_question(
+    question: str
+) -> bool:
+
+    lowered = question.lower()
+
+    availability_phrases = [
+        "available",
+        "availability",
+        "borrowed",
+        "borrow",
+        "checked out",
+        "currently available"
+    ]
+
+    return any(
+        phrase in lowered
+        for phrase in availability_phrases
+    )
 
 
 def history_to_text(
@@ -255,25 +381,32 @@ def history_to_text(
         )
 
         lines.append(
-            f"{role}: {message.content}"
+            f"{role}: "
+            f"{message.content}"
         )
 
-    return "\n".join(lines)
+    return "\n".join(
+        lines
+    )
 
 
 def retrieve_documents(
     inputs: dict
 ):
 
-    question = inputs["question"]
+    question = (
+        inputs["question"]
+    )
 
     history = inputs.get(
         "history",
         []
     )
 
-    history_text = history_to_text(
-        history
+    history_text = (
+        history_to_text(
+            history
+        )
     )
 
     if history_text:
@@ -287,15 +420,16 @@ def retrieve_documents(
 
     else:
 
-        retrieval_question = question
+        retrieval_question = (
+            question
+        )
 
-    documents = (
-        multi_query_retriever.invoke(
+    return (
+        multi_query_retriever
+        .invoke(
             retrieval_question
         )
     )
-
-    return documents
 
 
 def format_documents(
@@ -327,50 +461,56 @@ def retrieve_context(
     inputs: dict
 ) -> str:
 
-    documents = retrieve_documents(
-        inputs
+    documents = (
+        retrieve_documents(
+            inputs
+        )
     )
 
-    return format_documents(
-        documents
+    return (
+        format_documents(
+            documents
+        )
     )
 
 
-prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            """
+prompt = (
+    ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                """
 You are a helpful AI library assistant.
 
 Answer using ONLY the retrieved library
-context and the previous conversation.
+context and previous conversation.
 
 If the answer cannot be determined from
 the retrieved context or conversation,
-reply that you do not have that information.
+say that you do not have that information.
 
 Do not invent book details or sources.
 
-Use previous conversation messages when
-the user asks a follow-up question such as
+Use previous conversation when the user
+asks follow-up questions such as
 "Who wrote it?" or "What genre is it?"
 
 Retrieved library context:
 
 {context}
 """
-        ),
+            ),
 
-        MessagesPlaceholder(
-            variable_name="history"
-        ),
+            MessagesPlaceholder(
+                variable_name="history"
+            ),
 
-        (
-            "human",
-            "{question}"
-        )
-    ]
+            (
+                "human",
+                "{question}"
+            )
+        ]
+    )
 )
 
 
@@ -379,8 +519,10 @@ guard = RunnableLambda(
 )
 
 
-context_runnable = RunnableLambda(
-    retrieve_context
+context_runnable = (
+    RunnableLambda(
+        retrieve_context
+    )
 )
 
 
@@ -416,9 +558,14 @@ structured_model = (
 structured_chain = (
     guard
     | {
-        "context": context_runnable,
-        "question": question_runnable,
-        "history": history_runnable
+        "context":
+        context_runnable,
+
+        "question":
+        question_runnable,
+
+        "history":
+        history_runnable
     }
     | prompt
     | structured_model
@@ -428,9 +575,14 @@ structured_chain = (
 text_chain = (
     guard
     | {
-        "context": context_runnable,
-        "question": question_runnable,
-        "history": history_runnable
+        "context":
+        context_runnable,
+
+        "question":
+        question_runnable,
+
+        "history":
+        history_runnable
     }
     | prompt
     | model
@@ -479,12 +631,280 @@ text_chain_with_memory = (
 )
 
 
+def run_availability_tool(
+    question: str,
+    session_id: str
+) -> str:
+
+    history = get_session_history(
+        session_id
+    )
+
+    system_message = SystemMessage(
+        content="""
+You are a library assistant.
+
+The user is asking about CURRENT book
+availability.
+
+Use the check_book_availability tool when
+a book ID is available.
+
+Never invent availability information.
+
+If the user has not provided enough
+information to identify a book ID, ask
+them to provide the book ID.
+"""
+    )
+
+    messages = [
+        system_message,
+        *history.messages,
+        HumanMessage(
+            content=question
+        )
+    ]
+
+    first_response = (
+        model_with_tools.invoke(
+            messages
+        )
+    )
+
+    if not first_response.tool_calls:
+
+        answer = (
+            first_response.content
+        )
+
+        history.add_user_message(
+            question
+        )
+
+        history.add_ai_message(
+            answer
+        )
+
+        return answer
+
+    tool_messages = []
+
+    for call in (
+        first_response.tool_calls
+    ):
+
+        if (
+            call["name"]
+            == "check_book_availability"
+        ):
+
+            tool_result = (
+                check_book_availability
+                .invoke(
+                    call["args"]
+                )
+            )
+
+        else:
+
+            tool_result = (
+                "Unknown tool requested."
+            )
+
+        tool_messages.append(
+            ToolMessage(
+                content=tool_result,
+                tool_call_id=(
+                    call["id"]
+                )
+            )
+        )
+
+    final_messages = [
+        *messages,
+        first_response,
+        *tool_messages
+    ]
+
+    final_response = (
+        model_with_tools.invoke(
+            final_messages
+        )
+    )
+
+    answer = (
+        final_response.content
+    )
+
+    history.add_user_message(
+        question
+    )
+
+    history.add_ai_message(
+        answer
+    )
+
+    return answer
+
+
+def stream_availability_tool(
+    question: str,
+    session_id: str
+):
+
+    history = get_session_history(
+        session_id
+    )
+
+    system_message = SystemMessage(
+        content="""
+You are a library assistant.
+
+The user is asking about CURRENT book
+availability.
+
+Use the check_book_availability tool when
+a book ID is available.
+
+Never invent availability information.
+
+If the user has not supplied enough
+information to identify a book ID, ask
+them for the book ID.
+"""
+    )
+
+    messages = [
+        system_message,
+        *history.messages,
+        HumanMessage(
+            content=question
+        )
+    ]
+
+    first_response = (
+        model_with_tools.invoke(
+            messages
+        )
+    )
+
+    if not first_response.tool_calls:
+
+        answer = (
+            first_response.content
+        )
+
+        history.add_user_message(
+            question
+        )
+
+        history.add_ai_message(
+            answer
+        )
+
+        if answer:
+            yield answer
+
+        return
+
+    tool_messages = []
+
+    for call in (
+        first_response.tool_calls
+    ):
+
+        if (
+            call["name"]
+            == "check_book_availability"
+        ):
+
+            tool_result = (
+                check_book_availability
+                .invoke(
+                    call["args"]
+                )
+            )
+
+        else:
+
+            tool_result = (
+                "Unknown tool requested."
+            )
+
+        tool_messages.append(
+            ToolMessage(
+                content=tool_result,
+                tool_call_id=(
+                    call["id"]
+                )
+            )
+        )
+
+    final_messages = [
+        *messages,
+        first_response,
+        *tool_messages
+    ]
+
+    complete_answer = ""
+
+    for chunk in (
+        model_with_tools.stream(
+            final_messages
+        )
+    ):
+
+        text = chunk.content
+
+        if not text:
+            continue
+
+        complete_answer += text
+
+        yield text
+
+    history.add_user_message(
+        question
+    )
+
+    history.add_ai_message(
+        complete_answer
+    )
+
+
 def ask_structured(
     question: str,
     session_id: str
 ):
 
-    result = (
+    if is_availability_question(
+        question
+    ):
+
+        answer = (
+            run_availability_tool(
+                question,
+                session_id
+            )
+        )
+
+        parsed = BookAnswer(
+            answer=answer,
+            confidence="high",
+            sources=[
+                "Library availability API"
+            ]
+        )
+
+        return {
+            "parsed": parsed,
+            "raw": AIMessage(
+                content=answer
+            )
+        }
+
+    return (
         structured_chain_with_memory
         .invoke(
             {
@@ -499,13 +919,22 @@ def ask_structured(
         )
     )
 
-    return result
-
 
 def ask_text(
     question: str,
     session_id: str
 ) -> str:
+
+    if is_availability_question(
+        question
+    ):
+
+        return (
+            run_availability_tool(
+                question,
+                session_id
+            )
+        )
 
     result = (
         text_chain_with_memory
@@ -530,6 +959,19 @@ def stream_answer(
     session_id: str
 ):
 
+    if is_availability_question(
+        question
+    ):
+
+        yield from (
+            stream_availability_tool(
+                question,
+                session_id
+            )
+        )
+
+        return
+
     stream = (
         text_chain_with_memory
         .stream(
@@ -547,7 +989,9 @@ def stream_answer(
 
     for chunk in stream:
 
-        text = chunk.content
+        text = (
+            chunk.content
+        )
 
         if text:
             yield text
@@ -564,9 +1008,9 @@ def retrieve(
         )
     )
 
-    documents = documents[
-        :n_results
-    ]
+    documents = (
+        documents[:n_results]
+    )
 
     text_documents = [
         document.page_content
@@ -599,44 +1043,22 @@ if __name__ == "__main__":
 
     print(
         "Week 6 Project - "
-        "Combined LangChain RAG Chain"
+        "Library AI Assistant"
     )
 
     print()
 
-    session_id = "week6-test-user"
-
-    first_question = (
-        "Tell me about one of the "
-        "books in the library."
+    print(
+        "Testing availability tool "
+        "without the LLM:"
     )
 
-    print("QUESTION 1:")
-    print(first_question)
-
-    first_answer = ask_text(
-        first_question,
-        session_id
+    result = (
+        check_book_availability.invoke(
+            {
+                "book_id": 2
+            }
+        )
     )
 
-    print()
-    print("ANSWER 1:")
-    print(first_answer)
-
-    print()
-
-    second_question = (
-        "What category is it?"
-    )
-
-    print("QUESTION 2:")
-    print(second_question)
-
-    second_answer = ask_text(
-        second_question,
-        session_id
-    )
-
-    print()
-    print("ANSWER 2:")
-    print(second_answer)
+    print(result)
