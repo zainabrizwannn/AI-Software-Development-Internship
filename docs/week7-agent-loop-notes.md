@@ -31,3 +31,15 @@ The state moving through the graph contains the message history and the current 
 The generated Mermaid diagram confirmed the same overall control flow. One thing my hand-drawn version initially missed was that all three possible routes from the agent node — `tools`, `give_up`, and `END` — are conditional edges from the same node rather than separate sequential stages.
 
 The Mermaid graph also made the loop from `tools` back to `agent` more explicit, showing clearly how the think → act → observe cycle repeats until the agent finishes or reaches the step limit.
+
+## Part B — Challenge 1: Tool Description Experiment
+
+I tested the same five questions using three descriptions of `check_book_availability`: vague, precise, and over-long. In this run, all three versions produced the same tool choices: availability questions used `check_book_availability`, while search and catalog questions used `search_catalog`. This happened because the test questions were very explicit, so the model could infer the correct tool even when the description was vague. The precise description is still the best design because it clearly states when the tool should and should not be used, while the vague version relies too much on model inference and the over-long version adds unnecessary information that could become confusing in more ambiguous cases. Good tool descriptions should therefore be specific, concise, and focused on the exact conditions for using the tool.
+
+## Part B — Challenge 2: Preventing Cross-User Reservations
+
+I authenticated the request using User A's JWT and then deliberately sent User B's user ID in the request body to try to reserve a book on behalf of User B. The impersonation attempt failed because the reservation endpoint does not take the user identity from tool arguments or request data; it reads the authenticated user ID from the JWT claim. The database confirmed that the reservation belonged to User A even though User B's ID was supplied in the forged request. Checking this only in Python would not be sufficient because a malicious client could bypass the Python agent and call the .NET API directly, so authorization must always be enforced again on the server.
+
+## Part B — Challenge 3: Why JWT Must Not Be Stored in Graph State
+
+The user's JWT should never be stored inside LangGraph state because graph state may be persisted by a checkpointer. Once checkpointing is enabled, any token stored in the state could be written to persistent storage and remain there after the original request has finished. This creates a security risk because anyone who gains access to the checkpoint database could potentially retrieve a valid user credential and act as that user. The JWT should instead be passed through `RunnableConfig`, where it is available during execution without becoming part of the persisted graph state.
