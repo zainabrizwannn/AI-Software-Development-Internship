@@ -55,3 +55,15 @@ I tested a transient timeout workflow with `MAX_RETRIES = 2`. In the first test,
 ## Part C — Challenge 3: Router Misroute and Prompt Improvement
 
 I tested an ambiguous book-related message that could sound like casual conversation, such as "Is Dune any good?" or "What do you think about Dune?". The router initially risked classifying this type of message as `chitchat` even though the main subject was a book. I improved the router prompt by adding a general rule that conversational messages should still route to `catalog` when the main topic is a book, author, recommendation, or other library information. This change generalizes to similar book-opinion questions instead of hard-coding one specific sentence.
+
+## Part D — Checkpoint State History
+
+The saved state history shows how the graph changed across multiple execution steps for the same `thread_id`. From the history I can see which node should execute next, how many steps and retries had occurred, and how the message history grew over time. This is useful for debugging because it lets me inspect where the graph paused, how it resumed, and what state existed before and after each action.
+## Part D — Challenge 2: Rejected Approval
+
+I rejected the pending `reserve_book` action and resumed the same checkpointed thread with `approved = false`. The graph converted the rejected tool call into a `REJECTED_BY_USER` ToolMessage and returned to the agent. The agent then explained that the reservation was not made and did not attempt the same write action again. This confirms that a human rejection cannot be silently overridden by the agent.
+## Part D — Challenge 3: Long-Term User Preferences
+
+I added a `UserPreference` table containing `UserId`, `Key`, and `Value`. Preferences are stored separately from LangGraph checkpoint state and can be loaded when a new thread begins so the system prompt can use useful long-term information such as a preferred book genre. I also added a delete path for "forget my preferences", allowing the authenticated user to remove all saved preference data.
+
+Long-term memory must be handled carefully because an agent could store an incorrect preference that it merely inferred instead of one the user explicitly stated. Untrusted text or retrieved content could also be mistaken for a genuine user preference and become persistent personal data. For that reason, preferences should only be saved from clear user statements, tied to the authenticated user, and users should be able to inspect and delete them.
