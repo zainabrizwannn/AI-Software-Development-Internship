@@ -43,3 +43,15 @@ I authenticated the request using User A's JWT and then deliberately sent User B
 ## Part B — Challenge 3: Why JWT Must Not Be Stored in Graph State
 
 The user's JWT should never be stored inside LangGraph state because graph state may be persisted by a checkpointer. Once checkpointing is enabled, any token stored in the state could be written to persistent storage and remain there after the original request has finished. This creates a security risk because anyone who gains access to the checkpoint database could potentially retrieve a valid user credential and act as that user. The JWT should instead be passed through `RunnableConfig`, where it is available during execution without becoming part of the persisted graph state.
+
+## Part C — Challenge 1: Conflict Re-Planning
+
+I forced the reservation tool to return an `ERROR_CONFLICT` result representing an HTTP 409 response. The workflow detected the conflict and did not retry the same reservation blindly. Instead, it routed to the re-plan path, changed the plan to search for another available book, and then offered an alternative. This demonstrates why conflicts should trigger re-planning rather than retries, because retrying the same conflicting write request would not solve the underlying problem.
+
+## Part C — Challenge 2: Typed Retry Workflow
+
+I tested a transient timeout workflow with `MAX_RETRIES = 2`. In the first test, the tool failed twice with `ERROR_RETRYABLE` and succeeded on the third execution, while the state correctly recorded two retries. In the second test, the tool failed three times, and after the second retry the graph stopped with a clear user-facing failure message instead of retrying again. This proves that retryable errors are bounded by the retry counter. Retrying a write operation is only safe here because Part B added an idempotency key, which prevents the same reservation request from creating duplicate writes when a retry occurs.
+
+## Part C — Challenge 3: Router Misroute and Prompt Improvement
+
+I tested an ambiguous book-related message that could sound like casual conversation, such as "Is Dune any good?" or "What do you think about Dune?". The router initially risked classifying this type of message as `chitchat` even though the main subject was a book. I improved the router prompt by adding a general rule that conversational messages should still route to `catalog` when the main topic is a book, author, recommendation, or other library information. This change generalizes to similar book-opinion questions instead of hard-coding one specific sentence.
