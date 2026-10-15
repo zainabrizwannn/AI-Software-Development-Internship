@@ -1,0 +1,1 @@
+Artificial Intelligence enables computers to perform tasks that normally require human intelligence. Machine learning and deep learning are important branches of AI. AI is widely used in healthcare, finance, education, and software development.
