@@ -1,0 +1,28 @@
+<div class="navbar">
+
+  <h2>
+    Library Management
+  </h2>
+
+  <div>
+
+    <a routerLink="/books">
+      Books
+    </a>
+
+    <a routerLink="/chat">
+      AI Assistant
+    </a>
+
+    <button
+      type="button"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</div>
+
+<router-outlet></router-outlet>

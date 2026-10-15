@@ -1,0 +1,155 @@
+<div class="agent-page">
+
+  <div class="agent-card">
+
+    <h1>Library AI Agent</h1>
+
+    <p class="subtitle">
+      Search books, check availability
+      and request reservations.
+    </p>
+
+
+    <div class="input-row">
+
+      <input
+        [(ngModel)]="message"
+        placeholder="Ask the library agent..."
+        [disabled]="loading"
+      />
+
+      <button
+        (click)="start()"
+        [disabled]="loading ||
+                    !message.trim()"
+      >
+        Run
+      </button>
+
+      <button
+        *ngIf="
+          status === 'running' ||
+          status === 'pending_approval'
+        "
+        class="cancel"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+
+    <div
+      *ngIf="threadId"
+      class="thread"
+    >
+      Thread: {{ threadId }}
+    </div>
+
+
+    <div class="timeline">
+
+      <div
+        *ngFor="
+          let item of timeline
+        "
+        class="timeline-item"
+      >
+
+        <strong>
+          {{ item.title }}
+        </strong>
+
+        <span>
+          {{ item.text }}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div
+      *ngIf="pendingApproval"
+      class="approval-card"
+    >
+
+      <h3>
+        Approval Required
+      </h3>
+
+      <p>
+        The agent wants to perform:
+      </p>
+
+      <div
+        *ngFor="
+          let call
+          of pendingApproval.calls
+        "
+      >
+
+        <strong>
+          {{ call.name }}
+        </strong>
+
+        <pre>{{ call.args | json }}</pre>
+
+      </div>
+
+
+      <div class="approval-actions">
+
+        <button
+          (click)="approve(true)"
+          [disabled]="approvalLoading"
+        >
+          {{
+            approvalLoading
+              ? 'Processing...'
+              : 'Approve'
+          }}
+        </button>
+
+        <button
+          class="reject"
+          (click)="approve(false)"
+          [disabled]="approvalLoading"
+        >
+          Reject
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div
+      *ngIf="answer"
+      class="answer"
+    >
+      {{ answer }}
+    </div>
+
+
+    <div
+      *ngIf="errorMessage"
+      class="error"
+    >
+      {{ errorMessage }}
+    </div>
+
+
+    <div
+      class="status"
+    >
+      Status:
+      <strong>
+        {{ status }}
+      </strong>
+    </div>
+
+  </div>
+
+</div>
