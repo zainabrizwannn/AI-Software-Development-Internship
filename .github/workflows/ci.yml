@@ -1,0 +1,107 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  # =======================================================
+  # .NET BUILD + TESTS
+  # =======================================================
+
+  dotnet:
+    name: dotnet
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore backend tests
+        run: >
+          dotnet restore
+          "Week7/Part G/BackendTests/BackendTests.csproj"
+
+      - name: Build backend tests
+        run: >
+          dotnet build
+          "Week7/Part G/BackendTests/BackendTests.csproj"
+          -c Release
+          --no-restore
+
+      - name: Run xUnit tests
+        run: >
+          dotnet test
+          "Week7/Part G/BackendTests/BackendTests.csproj"
+          -c Release
+          --no-build
+          --verbosity normal
+
+
+  # =======================================================
+  # ANGULAR BUILD
+  # =======================================================
+
+  angular:
+    name: angular
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: "Week7/Part H/Frontend/LibraryUI"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.22.3"
+          cache: "npm"
+          cache-dependency-path: "Week7/Part H/Frontend/LibraryUI/package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular
+        run: npm run build
+
+
+  # =======================================================
+  # PYTHON DETERMINISTIC TESTS
+  # =======================================================
+
+  python:
+    name: python
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest respx httpx pydantic
+          pip install langchain-core langgraph langchain-ollama
+
+      - name: Run deterministic pytest suite
+        run: >
+          python -m pytest
+          "Week7/Part G/tests/test_agent_logic.py"
+          -q
