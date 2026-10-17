@@ -1,0 +1,69 @@
+# Week 7 Agent Loop Notes
+
+## Challenge 1 — Step Limit
+
+With `MAX_STEPS = 2`, the agent searched the catalog and found two science fiction books: Dune and Foundation. It then produced a partial response asking whether the user wanted the availability checked, but the graph immediately routed to the give-up node because the step limit had been reached. The user therefore saw both a useful partial answer and then the message: "I could not finish this within my step limit."
+
+This is not an ideal user experience because the final failure message makes the interaction look broken even though useful progress was made. A better limit-hit experience should explain that the agent reached its safe execution limit, summarize what it completed, and clearly state what remains unfinished. It should avoid discarding useful results and should give the user a simple next action, such as asking whether they want to continue.
+
+## Challenge 2 — Always-Failing Tool
+
+### Prediction
+
+If the agent calls a tool that always raises an exception, I expect the graph to fail unless the tool node handles the exception internally. If the exception is surfaced as a tool result instead of crashing, the agent may try the tool again or eventually stop at the step limit. I expect this challenge to show why tool failures should normally be returned as structured error data instead of raw exceptions.
+
+### Actual Result
+
+The prediction was correct. When `always_fail_tool` raised a `RuntimeError`, the LangGraph `ToolNode` propagated the exception and the whole graph stopped immediately. The agent did not retry the tool, did not reach the step limit, and did not produce a user-friendly apology. This shows that raw tool exceptions can crash the agent workflow and should normally be converted into structured error results that the graph can reason about.
+
+### Conclusion
+
+The default behavior was not acceptable for a user-facing agent because the user would receive a failed request instead of a useful explanation. A better design would catch tool failures and return structured error data such as `ERROR_RETRYABLE` or `ERROR_FINAL`, allowing the graph to decide whether to retry, re-plan, or stop safely.
+
+## Challenge 3 — Hand-Drawn Graph vs Mermaid Graph
+
+I first drew the graph manually as:
+
+START → agent → tools → agent, with additional conditional paths from the agent to either `give_up` or `END`.
+
+The state moving through the graph contains the message history and the current step count. When the agent calls a tool, the tool call is stored in an AI message, and after execution the tool result is appended as a ToolMessage before control returns to the agent.
+
+The generated Mermaid diagram confirmed the same overall control flow. One thing my hand-drawn version initially missed was that all three possible routes from the agent node — `tools`, `give_up`, and `END` — are conditional edges from the same node rather than separate sequential stages.
+
+The Mermaid graph also made the loop from `tools` back to `agent` more explicit, showing clearly how the think → act → observe cycle repeats until the agent finishes or reaches the step limit.
+
+## Part B — Challenge 1: Tool Description Experiment
+
+I tested the same five questions using three descriptions of `check_book_availability`: vague, precise, and over-long. In this run, all three versions produced the same tool choices: availability questions used `check_book_availability`, while search and catalog questions used `search_catalog`. This happened because the test questions were very explicit, so the model could infer the correct tool even when the description was vague. The precise description is still the best design because it clearly states when the tool should and should not be used, while the vague version relies too much on model inference and the over-long version adds unnecessary information that could become confusing in more ambiguous cases. Good tool descriptions should therefore be specific, concise, and focused on the exact conditions for using the tool.
+
+## Part B — Challenge 2: Preventing Cross-User Reservations
+
+I authenticated the request using User A's JWT and then deliberately sent User B's user ID in the request body to try to reserve a book on behalf of User B. The impersonation attempt failed because the reservation endpoint does not take the user identity from tool arguments or request data; it reads the authenticated user ID from the JWT claim. The database confirmed that the reservation belonged to User A even though User B's ID was supplied in the forged request. Checking this only in Python would not be sufficient because a malicious client could bypass the Python agent and call the .NET API directly, so authorization must always be enforced again on the server.
+
+## Part B — Challenge 3: Why JWT Must Not Be Stored in Graph State
+
+The user's JWT should never be stored inside LangGraph state because graph state may be persisted by a checkpointer. Once checkpointing is enabled, any token stored in the state could be written to persistent storage and remain there after the original request has finished. This creates a security risk because anyone who gains access to the checkpoint database could potentially retrieve a valid user credential and act as that user. The JWT should instead be passed through `RunnableConfig`, where it is available during execution without becoming part of the persisted graph state.
+
+## Part C — Challenge 1: Conflict Re-Planning
+
+I forced the reservation tool to return an `ERROR_CONFLICT` result representing an HTTP 409 response. The workflow detected the conflict and did not retry the same reservation blindly. Instead, it routed to the re-plan path, changed the plan to search for another available book, and then offered an alternative. This demonstrates why conflicts should trigger re-planning rather than retries, because retrying the same conflicting write request would not solve the underlying problem.
+
+## Part C — Challenge 2: Typed Retry Workflow
+
+I tested a transient timeout workflow with `MAX_RETRIES = 2`. In the first test, the tool failed twice with `ERROR_RETRYABLE` and succeeded on the third execution, while the state correctly recorded two retries. In the second test, the tool failed three times, and after the second retry the graph stopped with a clear user-facing failure message instead of retrying again. This proves that retryable errors are bounded by the retry counter. Retrying a write operation is only safe here because Part B added an idempotency key, which prevents the same reservation request from creating duplicate writes when a retry occurs.
+
+## Part C — Challenge 3: Router Misroute and Prompt Improvement
+
+I tested an ambiguous book-related message that could sound like casual conversation, such as "Is Dune any good?" or "What do you think about Dune?". The router initially risked classifying this type of message as `chitchat` even though the main subject was a book. I improved the router prompt by adding a general rule that conversational messages should still route to `catalog` when the main topic is a book, author, recommendation, or other library information. This change generalizes to similar book-opinion questions instead of hard-coding one specific sentence.
+
+## Part D — Checkpoint State History
+
+The saved state history shows how the graph changed across multiple execution steps for the same `thread_id`. From the history I can see which node should execute next, how many steps and retries had occurred, and how the message history grew over time. This is useful for debugging because it lets me inspect where the graph paused, how it resumed, and what state existed before and after each action.
+## Part D — Challenge 2: Rejected Approval
+
+I rejected the pending `reserve_book` action and resumed the same checkpointed thread with `approved = false`. The graph converted the rejected tool call into a `REJECTED_BY_USER` ToolMessage and returned to the agent. The agent then explained that the reservation was not made and did not attempt the same write action again. This confirms that a human rejection cannot be silently overridden by the agent.
+## Part D — Challenge 3: Long-Term User Preferences
+
+I added a `UserPreference` table containing `UserId`, `Key`, and `Value`. Preferences are stored separately from LangGraph checkpoint state and can be loaded when a new thread begins so the system prompt can use useful long-term information such as a preferred book genre. I also added a delete path for "forget my preferences", allowing the authenticated user to remove all saved preference data.
+
+Long-term memory must be handled carefully because an agent could store an incorrect preference that it merely inferred instead of one the user explicitly stated. Untrusted text or retrieved content could also be mistaken for a genuine user preference and become persistent personal data. For that reason, preferences should only be saved from clear user statements, tied to the authenticated user, and users should be able to inspect and delete them.
