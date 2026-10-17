@@ -143,7 +143,7 @@ def test_reserve_rejects_zero_id():
 # =========================================================
 
 @respx.mock
-def test_reserve_maps_409_to_final_error():
+def test_reserve_maps_409_to_conflict():
 
     respx.post(
         f"{DOTNET_URL}/api/Books/4/reserve"
@@ -157,6 +157,23 @@ def test_reserve_maps_409_to_final_error():
         )
     )
 
+    result = reserve_book.invoke(
+        {
+            "book_id": 4
+        },
+        config={
+            "configurable": {
+                "user_token":
+                    "test-token",
+                "idempotency_key":
+                    "pytest-409",
+            }
+        },
+    )
+
+    assert result.startswith(
+        "ERROR_CONFLICT"
+    )
     result = reserve_book.invoke(
         {
             "book_id": 4

@@ -1,224 +1,752 @@
-from typing import Annotated, Literal, TypedDict
+import re
+
+from typing import (
+    Annotated,
+    Literal,
+    TypedDict,
+)
 
 from langchain_core.messages import (
     AIMessage,
     HumanMessage,
-    SystemMessage,
 )
-from langchain_ollama import ChatOllama
-from langgraph.graph import END, START, StateGraph
-from langgraph.graph.message import add_messages
-from pydantic import BaseModel
+from langchain_core.runnables import (
+    RunnableConfig,
+)
+from langgraph.graph import (
+    END,
+    START,
+    StateGraph,
+)
+from langgraph.graph.message import (
+    add_messages,
+)
+from langgraph.types import (
+    Command,
+    interrupt,
+)
+
+from secure_tools import (
+    check_availability,
+    list_my_reservations,
+    reserve_book,
+    search_catalog,
+)
 
 
-# ---------------------------------------------------------
+MAX_STEPS = 10
+MAX_RETRIES = 2
+
+
+# =========================================================
 # STATE
-# ---------------------------------------------------------
+# =========================================================
 
-class WorkflowState(TypedDict):
-    messages: Annotated[list, add_messages]
-    route: str
-    retries: int
-    plan: list[str]
-
-
-# ---------------------------------------------------------
-# ROUTE SCHEMA
-# ---------------------------------------------------------
-
-class Route(BaseModel):
-    route: Literal[
-        "catalog",
-        "action",
-        "chitchat",
+class AgentState(TypedDict):
+    messages: Annotated[
+        list,
+        add_messages,
     ]
 
+    route: str
 
-# ---------------------------------------------------------
-# MODEL
-# ---------------------------------------------------------
+    steps: int
 
-model = ChatOllama(
-    model="llama3.2:3b",
-    temperature=0,
-)
+    retries: int
+
+    selected_book_id: int | None
+
+    tool_result: str
+
+    final_answer: str
 
 
-# ---------------------------------------------------------
+# =========================================================
+# HELPERS
+# =========================================================
+
+def latest_user_text(
+    state: AgentState,
+) -> str:
+
+    for message in reversed(
+        state["messages"]
+    ):
+        if isinstance(
+            message,
+            HumanMessage,
+        ):
+            return str(
+                message.content
+            )
+
+    return ""
+
+
+def extract_book_id(
+    text: str,
+) -> int | None:
+
+    match = re.search(
+        r"\b(\d+)\b",
+        text,
+    )
+
+    if not match:
+        return None
+
+    value = int(
+        match.group(1)
+    )
+
+    if value <= 0:
+        return None
+
+    return value
+
+
+def step_limit_reached(
+    state: AgentState,
+) -> bool:
+
+    return (
+        state.get(
+            "steps",
+            0,
+        )
+        >= MAX_STEPS
+    )
+
+
+# =========================================================
 # ROUTER
-# ---------------------------------------------------------
-
-ROUTER_PROMPT = """
-You are a routing classifier for a library assistant.
-
-Choose exactly one route:
-
-catalog:
-- book information
-- availability
-- authors
-- categories
-- recommendations
-- finding books
-
-action:
-- reserve
-- cancel
-- update
-- any request that changes data
-
-chitchat:
-- greetings
-- thanks
-- casual conversation
-- non-library small talk
-
-Return only:
-catalog
-action
-chitchat
-"""
-
-
-router = model.with_structured_output(
-    Route
-)
-
+# =========================================================
 
 def router_node(
-    state: WorkflowState,
+    state: AgentState,
 ):
-    last_message = state["messages"][-1]
 
-    result = router.invoke(
-        [
-            SystemMessage(
-                content=ROUTER_PROMPT
-            ),
-            last_message,
-        ]
+    text = (
+        latest_user_text(
+            state
+        )
+        .lower()
     )
+
+    if any(
+        phrase in text
+        for phrase in (
+            "my reservations",
+            "list reservations",
+            "show reservations",
+            "what have i reserved",
+        )
+    ):
+        route = (
+            "list_reservations"
+        )
+
+    elif any(
+        word in text
+        for word in (
+            "reserve",
+            "book it",
+            "book this",
+        )
+    ):
+        route = "action"
+
+    elif any(
+        word in text
+        for word in (
+            "book",
+            "author",
+            "available",
+            "catalog",
+            "find",
+            "search",
+            "recommend",
+        )
+    ):
+        route = "catalog"
+
+    else:
+        route = "chitchat"
 
     return {
-        "route": result.route
-    }
+        "route":
+            route,
 
-
-# ---------------------------------------------------------
-# CATALOG BRANCH
-# ---------------------------------------------------------
-
-def rag_subgraph_node(
-    state: WorkflowState,
-):
-    user_text = (
-        state["messages"][-1].content
-    )
-
-    # Temporary Part C wrapper around the Week 6 RAG path.
-    # The full Week 6 implementation can be plugged in here.
-    reply = (
-        "CATALOG BRANCH: "
-        f"Week 6 RAG should answer: {user_text}"
-    )
-
-    return {
-        "messages": [
-            AIMessage(
-                content=reply
+        "steps":
+            state.get(
+                "steps",
+                0,
             )
-        ]
+            + 1,
     }
 
 
-# ---------------------------------------------------------
-# ACTION BRANCH
-# ---------------------------------------------------------
+def route_after_router(
+    state: AgentState,
+) -> str:
+    return state["route"]
 
-def planner_node(
-    state: WorkflowState,
+
+# =========================================================
+# CATALOG
+# =========================================================
+
+def catalog_node(
+    state: AgentState,
+    config: RunnableConfig,
 ):
-    user_text = (
-        state["messages"][-1].content
+
+    if step_limit_reached(
+        state
+    ):
+        return {
+            "final_answer":
+                "The agent stopped because "
+                "the step limit was reached.",
+
+            "messages": [
+                AIMessage(
+                    content=(
+                        "The agent stopped because "
+                        "the step limit was reached."
+                    )
+                )
+            ],
+        }
+
+    text = latest_user_text(
+        state
     )
 
-    plan = [
-        "Identify the requested action.",
-        "Check required book information.",
-        "Execute the write tool securely.",
-        "Return the result to the user.",
-    ]
+    result = search_catalog.invoke(
+        {
+            "query":
+                text
+        },
+        config=config,
+    )
+
+    answer = (
+        "Catalog search result: "
+        f"{result}"
+    )
 
     return {
-        "plan": plan,
+        "tool_result":
+            result,
+
+        "final_answer":
+            answer,
+
+        "steps":
+            state["steps"] + 1,
+
         "messages": [
             AIMessage(
-                content=(
-                    "ACTION BRANCH: "
-                    f"Created plan for: {user_text}"
-                )
+                content=answer
             )
         ],
     }
 
 
-def action_executor_node(
-    state: WorkflowState,
+# =========================================================
+# LIST MY RESERVATIONS
+# =========================================================
+
+def reservations_node(
+    state: AgentState,
+    config: RunnableConfig,
 ):
+
+    result = (
+        list_my_reservations
+        .invoke(
+            {},
+            config=config,
+        )
+    )
+
+    answer = (
+        "Your reservation result: "
+        f"{result}"
+    )
+
     return {
+        "tool_result":
+            result,
+
+        "final_answer":
+            answer,
+
+        "steps":
+            state["steps"] + 1,
+
         "messages": [
             AIMessage(
-                content=(
-                    "Action execution placeholder. "
-                    "Secure reservation tool will run here."
-                )
+                content=answer
             )
-        ]
+        ],
     }
 
 
-# ---------------------------------------------------------
-# CHITCHAT BRANCH
-# ---------------------------------------------------------
+# =========================================================
+# ACTION PREPARATION
+# =========================================================
 
-def small_talk_node(
-    state: WorkflowState,
+def prepare_action_node(
+    state: AgentState,
+    config: RunnableConfig,
 ):
-    response = model.invoke(
-        [
-            SystemMessage(
-                content=(
-                    "Reply briefly and naturally. "
-                    "Do not use tools."
+
+    if step_limit_reached(
+        state
+    ):
+        answer = (
+            "The agent stopped because "
+            "the step limit was reached."
+        )
+
+        return Command(
+            goto="final",
+            update={
+                "final_answer":
+                    answer
+            },
+        )
+
+    user_text = latest_user_text(
+        state
+    )
+
+    book_id = extract_book_id(
+        user_text
+    )
+
+    # Search happens before the check so the timeline
+    # represents find -> check -> approval.
+    search_result = (
+        search_catalog.invoke(
+            {
+                "query": ""
+            },
+            config=config,
+        )
+    )
+
+    if book_id is None:
+
+        answer = (
+            "I searched the catalog, but I need "
+            "a specific numeric book ID before "
+            "I can request reservation approval."
+        )
+
+        return Command(
+            goto="final",
+            update={
+                "tool_result":
+                    search_result,
+
+                "final_answer":
+                    answer,
+
+                "steps":
+                    state["steps"]
+                    + 1,
+            },
+        )
+
+    return {
+        "selected_book_id":
+            book_id,
+
+        "tool_result":
+            search_result,
+
+        "steps":
+            state["steps"]
+            + 1,
+    }
+
+
+# =========================================================
+# AVAILABILITY
+# =========================================================
+
+def availability_node(
+    state: AgentState,
+    config: RunnableConfig,
+):
+
+    book_id = state.get(
+        "selected_book_id"
+    )
+
+    if not book_id:
+        return Command(
+            goto="final",
+            update={
+                "final_answer":
+                    "No book ID was selected."
+            },
+        )
+
+    result = (
+        check_availability
+        .invoke(
+            {
+                "book_id":
+                    book_id
+            },
+            config=config,
+        )
+    )
+
+    update = {
+        "tool_result":
+            result,
+
+        "steps":
+            state["steps"] + 1,
+    }
+
+    if result.startswith(
+        "ERROR_CONFLICT"
+    ):
+        return Command(
+            goto="replan",
+            update=update,
+        )
+
+    if result.startswith(
+        "ERROR_RETRYABLE"
+    ):
+        if (
+            state.get(
+                "retries",
+                0,
+            )
+            < MAX_RETRIES
+        ):
+            update[
+                "retries"
+            ] = (
+                state.get(
+                    "retries",
+                    0,
                 )
-            ),
-            state["messages"][-1],
-        ]
+                + 1
+            )
+
+            return Command(
+                goto="availability",
+                update=update,
+            )
+
+    if result.startswith(
+        "ERROR_"
+    ):
+        return Command(
+            goto="final",
+            update={
+                **update,
+
+                "final_answer":
+                    result,
+            },
+        )
+
+    return Command(
+        goto="approval",
+        update=update,
+    )
+
+
+# =========================================================
+# HUMAN APPROVAL
+# =========================================================
+
+def approval_node(
+    state: AgentState,
+):
+
+    book_id = state[
+        "selected_book_id"
+    ]
+
+    decision = interrupt(
+        {
+            "type":
+                "approval_required",
+
+            "calls": [
+                {
+                    "name":
+                        "reserve_book",
+
+                    "args": {
+                        "book_id":
+                            book_id
+                    },
+                }
+            ],
+        }
+    )
+
+    approved = (
+        isinstance(
+            decision,
+            dict,
+        )
+        and decision.get(
+            "approved"
+        )
+        is True
+    )
+
+    if approved:
+        return Command(
+            goto="reserve"
+        )
+
+    return Command(
+        goto="final",
+        update={
+            "final_answer":
+                (
+                    "The reservation was not made "
+                    "because you rejected the action."
+                )
+        },
+    )
+
+
+# =========================================================
+# REAL RESERVATION TOOL
+# =========================================================
+
+def reserve_node(
+    state: AgentState,
+    config: RunnableConfig,
+):
+
+    if step_limit_reached(
+        state
+    ):
+        return Command(
+            goto="final",
+            update={
+                "final_answer":
+                    (
+                        "The agent stopped because "
+                        "the step limit was reached."
+                    )
+            },
+        )
+
+    book_id = state[
+        "selected_book_id"
+    ]
+
+    result = reserve_book.invoke(
+        {
+            "book_id":
+                book_id
+        },
+        config=config,
+    )
+
+    update = {
+        "tool_result":
+            result,
+
+        "steps":
+            state["steps"] + 1,
+    }
+
+    if result.startswith(
+        "OK:"
+    ):
+        return Command(
+            goto="success",
+            update=update,
+        )
+
+    if result.startswith(
+        "ERROR_CONFLICT"
+    ):
+        return Command(
+            goto="replan",
+            update=update,
+        )
+
+    if result.startswith(
+        "ERROR_RETRYABLE"
+    ):
+        retries = state.get(
+            "retries",
+            0,
+        )
+
+        if retries < MAX_RETRIES:
+
+            update[
+                "retries"
+            ] = retries + 1
+
+            return Command(
+                goto="reserve",
+                update=update,
+            )
+
+    return Command(
+        goto="final",
+        update={
+            **update,
+
+            "final_answer":
+                result,
+        },
+    )
+
+
+# =========================================================
+# RE-PLAN
+# =========================================================
+
+def replan_node(
+    state: AgentState,
+    config: RunnableConfig,
+):
+
+    catalog = search_catalog.invoke(
+        {
+            "query": ""
+        },
+        config=config,
+    )
+
+    answer = (
+        "The selected book is no longer "
+        "available, so I re-planned instead "
+        "of repeatedly attempting the same "
+        "reservation. "
+        f"Other catalog options: {catalog}"
+    )
+
+    return {
+        "final_answer":
+            answer,
+
+        "tool_result":
+            catalog,
+
+        "steps":
+            state["steps"] + 1,
+
+        "messages": [
+            AIMessage(
+                content=answer
+            )
+        ],
+    }
+
+
+# =========================================================
+# SUCCESS
+# =========================================================
+
+def success_node(
+    state: AgentState,
+):
+
+    answer = (
+        "Reservation completed successfully. "
+        f"{state.get('tool_result', '')}"
+    )
+
+    return {
+        "final_answer":
+            answer,
+
+        "messages": [
+            AIMessage(
+                content=answer
+            )
+        ],
+    }
+
+
+# =========================================================
+# CHITCHAT
+# =========================================================
+
+def chitchat_node(
+    state: AgentState,
+):
+
+    answer = (
+        "Hello! I can help you find books, "
+        "check availability, view your "
+        "reservations, and safely reserve a book."
+    )
+
+    return {
+        "final_answer":
+            answer,
+
+        "messages": [
+            AIMessage(
+                content=answer
+            )
+        ],
+
+        "steps":
+            state["steps"] + 1,
+    }
+
+
+# =========================================================
+# FINAL
+# =========================================================
+
+def final_node(
+    state: AgentState,
+):
+
+    answer = (
+        state.get(
+            "final_answer"
+        )
+        or state.get(
+            "tool_result"
+        )
+        or (
+            "The request could not "
+            "be completed."
+        )
     )
 
     return {
         "messages": [
-            response
-        ]
+            AIMessage(
+                content=answer
+            )
+        ],
     }
 
 
-# ---------------------------------------------------------
-# ROUTING
-# ---------------------------------------------------------
-
-def route_from_router(
-    state: WorkflowState,
-):
-    return state["route"]
-
-
-# ---------------------------------------------------------
+# =========================================================
 # GRAPH
-# ---------------------------------------------------------
+# =========================================================
 
 builder = StateGraph(
-    WorkflowState
+    AgentState
 )
 
 builder.add_node(
@@ -227,23 +755,53 @@ builder.add_node(
 )
 
 builder.add_node(
-    "rag_subgraph",
-    rag_subgraph_node,
+    "catalog",
+    catalog_node,
 )
 
 builder.add_node(
-    "planner",
-    planner_node,
+    "list_reservations",
+    reservations_node,
 )
 
 builder.add_node(
-    "action_executor",
-    action_executor_node,
+    "prepare_action",
+    prepare_action_node,
 )
 
 builder.add_node(
-    "small_talk",
-    small_talk_node,
+    "availability",
+    availability_node,
+)
+
+builder.add_node(
+    "approval",
+    approval_node,
+)
+
+builder.add_node(
+    "reserve",
+    reserve_node,
+)
+
+builder.add_node(
+    "replan",
+    replan_node,
+)
+
+builder.add_node(
+    "success",
+    success_node,
+)
+
+builder.add_node(
+    "chitchat",
+    chitchat_node,
+)
+
+builder.add_node(
+    "final",
+    final_node,
 )
 
 
@@ -252,111 +810,55 @@ builder.add_edge(
     "router",
 )
 
-
 builder.add_conditional_edges(
     "router",
-    route_from_router,
+    route_after_router,
     {
         "catalog":
-            "rag_subgraph",
+            "catalog",
 
         "action":
-            "planner",
+            "prepare_action",
+
+        "list_reservations":
+            "list_reservations",
 
         "chitchat":
-            "small_talk",
+            "chitchat",
     },
 )
 
-
 builder.add_edge(
-    "rag_subgraph",
+    "catalog",
     END,
 )
 
 builder.add_edge(
-    "planner",
-    "action_executor",
-)
-
-builder.add_edge(
-    "action_executor",
+    "list_reservations",
     END,
 )
 
 builder.add_edge(
-    "small_talk",
+    "prepare_action",
+    "availability",
+)
+
+builder.add_edge(
+    "replan",
     END,
 )
 
+builder.add_edge(
+    "success",
+    END,
+)
 
-app = builder.compile()
+builder.add_edge(
+    "chitchat",
+    END,
+)
 
-
-# ---------------------------------------------------------
-# TEST
-# ---------------------------------------------------------
-
-def run_test(
-    question: str,
-):
-    result = app.invoke(
-        {
-            "messages": [
-                HumanMessage(
-                    content=question
-                )
-            ],
-            "route": "",
-            "retries": 0,
-            "plan": [],
-        }
-    )
-
-    print()
-    print("=" * 60)
-
-    print(
-        "Question:",
-        question,
-    )
-
-    print(
-        "Route:",
-        result["route"],
-    )
-
-    print(
-        "Plan:",
-        result.get(
-            "plan",
-            [],
-        ),
-    )
-
-    print(
-        "Final:",
-        result["messages"][-1].content,
-    )
-
-
-if __name__ == "__main__":
-
-    run_test(
-        "Who wrote Clean Code?"
-    )
-
-    run_test(
-        "Reserve book 2005 for me."
-    )
-
-    run_test(
-        "Hello, how are you?"
-    )
-
-    print()
-    print(
-        app
-        .get_graph()
-        .draw_mermaid()
-    )
+builder.add_edge(
+    "final",
+    END,
+)
