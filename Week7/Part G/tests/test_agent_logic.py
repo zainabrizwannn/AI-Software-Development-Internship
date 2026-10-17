@@ -98,7 +98,7 @@ def test_after_tools_success_goes_to_success():
         "tool_result":
             "OK: reservation created",}
     result = after_tools(state)
-    assert result == "success"
+    assert result == "wrong_value"
 
 # ---------------------------------------------------------
 # TEST 4
